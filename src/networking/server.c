@@ -1,4 +1,4 @@
-#include "server.h"
+#include "../../include/server.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,6 +19,9 @@ struct Server server_constructor(int domain, int service, int protocol,
     server.address.sin_addr.s_addr = htonl(interface);
 
     server.socket = socket(domain, service, protocol);
+    int option = 1;
+    setsockopt(server.socket, SOL_SOCKET, SO_REUSEADDR, &option,
+               sizeof(option));
     if (server.socket == 0) {
         perror("Failed to connect socket .... \n");
         exit(1);
